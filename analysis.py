@@ -28,6 +28,7 @@ def analysis(arch, maxParallelism, PDNType):
 
     for CNNMacs in MACSperFrame:
         print("Now starting", CNNNames[i])
+        i += 1
 
         currentParallelism = maxParallelism
         PE = 32*8*2*maxParallelism
@@ -96,19 +97,15 @@ def main():
         arch.FPS, arch.totalEnergy, arch.totalFrames = analysis(arch, maxPara, typePDN)
         typePDN += 1
 
+        print("{}:".format(arch.name))
 
-        for CNN in CNNNames:
-            for totFrames in arch.totalFrames:
-                print("Total Frames:", totFrames)
+        i = 0
+        while i < 3:
+            print("\t{}:".format(CNNNames[i]))  
+            print (arch.FPS[i])
+            print(arch.totalEnergy[i])
+            print(arch.totalFrames[i])      
 
-            for framesPerSecond in arch.FPS:
-                print("FPS:",framesPerSecond)
 
-            for energyTotal in arch.totalEnergy:
-                print("Total Energy:", energyTotal)
-
-        print()
-
-        
 if __name__ == "__main__":
     main()
