@@ -107,5 +107,8 @@ def main():
             for energyTotal in arch.totalEnergy:
                 print("Total Energy:", energyTotal)
 
+        print()
+
+        
 if __name__ == "__main__":
     main()
