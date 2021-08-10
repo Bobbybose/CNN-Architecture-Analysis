@@ -2,8 +2,7 @@
 #Author: Bobby Bose
 
 #Constants
-
-#VGG16, GoogleNet, ResNet
+    #VGG16, GoogleNet, ResNet
 MACSperFrame = [15500000000, 1430000000, 3900000000]
 CNNNames = ["VGG16", "GoogleNet", "ResNet"]
 
@@ -104,7 +103,8 @@ def main():
             print("\t{}:".format(CNNNames[i]))  
             print (arch.FPS[i])
             print(arch.totalEnergy[i])
-            print(arch.totalFrames[i])      
+            print(arch.totalFrames[i])    
+            i += 1  
 
 
 if __name__ == "__main__":
