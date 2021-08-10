@@ -100,11 +100,12 @@ def main():
 
         i = 0
         while i < 3:
-            print("\t{}:".format(CNNNames[i]))  
-            print (arch.FPS[i])
-            print(arch.totalEnergy[i])
-            print(arch.totalFrames[i])    
+            print(CNNNames[i])  
+            print ("FPS:", arch.FPS[i])
+            print("Energy:", arch.totalEnergy[i])
+            print("Total Frames:", arch.totalFrames[i])    
             i += 1  
+        print()
 
 
 if __name__ == "__main__":
