@@ -1,4 +1,5 @@
-
+#Analysis for three CNNs using different architectures
+#Author: Bobby Bose
 
 #Constants
 
