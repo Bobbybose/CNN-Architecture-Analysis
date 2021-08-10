@@ -27,7 +27,7 @@ def analysis(arch, maxParallelism, PDNType):
     i = 0
 
     for CNNMacs in MACSperFrame:
-        print("Now starting", CNNNames[i])
+        #print("Now starting", CNNNames[i])
         i += 1
 
         currentParallelism = maxParallelism
