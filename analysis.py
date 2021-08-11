@@ -23,39 +23,25 @@ def analysis(arch, maxParallelism, PDNType):
     framesPerSecond = []
     energyTot = []
     frameTotals = []
-    i = 0
 
     for CNNMacs in MACSperFrame:
 
-        i += 1
-
-        #if i == 2:
-        #    break
-
         currentParallelism = maxParallelism
         PE = 32*8*2*maxParallelism
-
 
         totalFrames = 0
         totalTime = 0
         totalEnergy = 0
 
-        #print(arch.name)
-        #print(totalFrames, totalEnergy)
-        #print("Now starting", CNNNames[i-1])
-        #print("Max parallelism and PE:",currentParallelism, PE)
-        #print("MACLatency and CNNMAcs:", arch.MACLatency, CNNMacs)
 
         frameLatency = ((arch.MACLatency*CNNMacs)*1e-9)/PE
         frameEnergy = arch.MACEnergy*CNNMacs*1e-12
 
-        #print("Frame latency and frame energy:", frameLatency, frameEnergy)
 
         if(PDNType == 0):
             currTimeDrop = clusteredTimeDrops[0]
         else:
             currTimeDrop = distributedTimeDrops[0]
-        #print("Current time drop:",currTimeDrop)
 
         timeDropPos = 0
 
@@ -66,10 +52,6 @@ def analysis(arch, maxParallelism, PDNType):
 
             #If parallelism needs to drop
             if(totalTime >= currTimeDrop):
-                #print(currentParallelism, "SA over.")
-                #print("\tTotal Time:", totalTime)
-                #print("\tFrames so far:", totalFrames)
-
 
                 #If we're at the end of the lifetime
                 if(currentParallelism == 1):
@@ -118,7 +100,7 @@ def main():
         print("{}:".format(arch.name))
 
         i = 0
-        while i < 1:
+        while i < 3:
             print(CNNNames[i])  
             print ("FPS:", arch.FPS[i])
             print("Energy:", arch.totalEnergy[i])
