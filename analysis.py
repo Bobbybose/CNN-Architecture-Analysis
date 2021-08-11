@@ -26,34 +26,51 @@ def analysis(arch, maxParallelism, PDNType):
     i = 0
 
     for CNNMacs in MACSperFrame:
-        #print("Now starting", CNNNames[i])
+
         i += 1
+
+        #if i == 2:
+        #    break
 
         currentParallelism = maxParallelism
         PE = 32*8*2*maxParallelism
+
 
         totalFrames = 0
         totalTime = 0
         totalEnergy = 0
 
+        #print(arch.name)
+        #print(totalFrames, totalEnergy)
+        #print("Now starting", CNNNames[i-1])
+        #print("Max parallelism and PE:",currentParallelism, PE)
+        #print("MACLatency and CNNMAcs:", arch.MACLatency, CNNMacs)
+
         frameLatency = ((arch.MACLatency*CNNMacs)*1e-9)/PE
         frameEnergy = arch.MACEnergy*CNNMacs*1e-12
+
+        #print("Frame latency and frame energy:", frameLatency, frameEnergy)
 
         if(PDNType == 0):
             currTimeDrop = clusteredTimeDrops[0]
         else:
             currTimeDrop = distributedTimeDrops[0]
-        
+        #print("Current time drop:",currTimeDrop)
+
         timeDropPos = 0
 
         while currentParallelism >= 1:
             totalFrames += 1
             totalTime += frameLatency
-            totalEnergy += frameLatency
+            totalEnergy += frameEnergy
 
             #If parallelism needs to drop
             if(totalTime >= currTimeDrop):
-                
+                #print(currentParallelism, "SA over.")
+                #print("\tTotal Time:", totalTime)
+                #print("\tFrames so far:", totalFrames)
+
+
                 #If we're at the end of the lifetime
                 if(currentParallelism == 1):
                     framesPerSecond.append(totalFrames/totalTime)
@@ -78,28 +95,30 @@ def analysis(arch, maxParallelism, PDNType):
 
 def main():
     Architectures = []
-
+    print("Beginning")
     Architectures.append(Architecture("DrAccClustered", 2940, 588))
-    Architectures.append(Architecture("DrAccDistributed", 2940, 588))
     Architectures.append(Architecture("ELP2IMClustered", 3136, 448) )
-    Architectures.append(Architecture("ELP2IMDistributed", 3136, 448))
     Architectures.append(Architecture("LAccClustered", 231, 150)) 
+    Architectures.append(Architecture("DrAccDistributed", 2940, 588))
+    Architectures.append(Architecture("ELP2IMDistributed", 3136, 448))
     Architectures.append(Architecture("LAccDistributed", 231, 150))
 
-    typePDN=0
+    archNum=0
     for arch in Architectures:
-        if(typePDN%2 == 0):
+        if(archNum < 3):
             maxPara = 8
+            typePDN = 0
         else:
             maxPara = 16
+            typePDN = 1
 
         arch.FPS, arch.totalEnergy, arch.totalFrames = analysis(arch, maxPara, typePDN)
-        typePDN += 1
+        archNum += 1
 
         print("{}:".format(arch.name))
 
         i = 0
-        while i < 3:
+        while i < 1:
             print(CNNNames[i])  
             print ("FPS:", arch.FPS[i])
             print("Energy:", arch.totalEnergy[i])
